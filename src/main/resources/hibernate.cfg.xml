@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Configuração de conexão com Banco de Dados -->
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/scesaude</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">anabia22</property>
+        <!-- JDBC tamanho do pool de conexão -->
+        <property name="hibernate.connection.pool_size">1</property>
+        <!-- Dialetos do Banco de Dados -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</property>
+        <!-- Gerenciamento do contexto da conexão -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        <!-- Cache de 2º Nível -->
+        <property name="cache.provider_class">org.hibernate.internal.NoCacheProvider</property>
+        <!-- Mostra as SQLs geradas -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- Criar tabelas do Banco de Dados -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!-- Mapeamento das classes entidades "Domain = Modelo" -->
+    
+        <mapping class="br.com.scesaude.domain.Bairro"></mapping>
+        <mapping class="br.com.scesaude.domain.Cidade"></mapping>
+        <mapping class="br.com.scesaude.domain.Contato"></mapping>
+        <mapping class="br.com.scesaude.domain.Endereco"></mapping>
+        <mapping class="br.com.scesaude.domain.Entidade"></mapping>
+        <mapping class="br.com.scesaude.domain.Estado"></mapping>
+        <mapping class="br.com.scesaude.domain.EstadoCivil"></mapping>
+        <mapping class="br.com.scesaude.domain.Funcionario"></mapping>
+        <mapping class="br.com.scesaude.domain.Pessoa"></mapping>
+        <mapping class="br.com.scesaude.domain.PessoaJuridica"></mapping>
+        <mapping class="br.com.scesaude.domain.TipoEntidade"></mapping>
+        <mapping class="br.com.scesaude.domain.TipoFuncionario"></mapping>
+        
+     
+    </session-factory>
+</hibernate-configuration>
+

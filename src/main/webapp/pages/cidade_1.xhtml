@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templates/modelo.xhtml">
+
+    <ui:define name="conteudo">
+
+        <h:form id="frmLista">
+            <p:panel id="pnlLista">
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado" paginator="true"
+                             value="#{entidadeBean1.entidades}" 
+                             var="entidade" rows="6" paginatorPosition="top">
+                    <f:facet name="footer">
+                        <p:commandButton value="Novo" oncomplete="PF('dlgCidade').show();"
+                                         actionListener="#{entidadeBean1.novo()}" update=":mensagem :frmCadastro:painel">
+                            <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </f:facet>
+                    <p:column headerText="Cód. IBGE">
+                        <h:outputText value="#{entidade.codigoCNES}"/>
+                    </p:column>
+
+                                   
+
+                    <p:column headerText="Opções">
+                       
+                    </p:column>
+                </p:dataTable>
+                
+            </p:panel>
+        </h:form>
+        <p:dialog header="Cadastro de Cidades" widgetVar="dlgCidade"
+                  draggable="false" resizable="false" modal="true" closable="false">
+            <h:form id="frmCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel value="Cód. IBGE:"/>
+                    <p:inputText maxlength="12" size="8" value="#{entidadeBean1.entidade.pessoa.nome}"/>
+
+                    <p:outputLabel for="estado" value="Estado:"/>
+                    <p:selectOneMenu id="estado" filter="true" value="#{entidadeBean1.entidade.tipoEntidade}"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     required="true" requiredMessage="Favor informe Estado!">
+                        <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione um Estado"/>
+                        <f:selectItems value="#{entidadeBean1.tipoEntidades}" var="estado"
+                                       itemValue="#{estado}" itemLabel="#{estado.descricao}"/>
+                    </p:selectOneMenu>
+                    
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+
+                   
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
+
+

@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templates/modelo.xhtml">
+
+    <ui:define name="conteudo">
+        <h:form id="formListagem">
+            <p:panel header="Tipo de Entidades cadastradas">
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro Encontrado" paginator="true"
+                             value="#{tipoEntidadeBean.tipoEntidades}" var="tpEntidade" rows="18" paginatorPosition="top">
+                    <f:facet name="footer">
+                        <p:commandButton value="Novo" oncomplete="PF('dlgtpEntidade').show();" 
+                                         actionListener="#{tipoEntidadeBean.novo}"
+                                         update=":formCadastro:painel"/>
+                    </f:facet>
+                    <p:column headerText="Descrição" sortBy="#{tpEntidade.descricao}" filterBy="#{tpEntidade.descricao}">
+                        <h:outputText value="#{tpEntidade.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Cadastro" sortBy="#{tpEntidade.dataCadastro}">
+                        <h:outputText value="#{tpEntidade.dataCadastro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Opções">
+                        <p:commandButton icon="ui-icon-trash"
+                                         actionListener="#{tipoEntidadeBean.excluir}"
+                                         update=":formListagem:tabela">
+                            <p:confirm header="Excluir" message="Deseja excluir Estado?"
+                                       icon="ui-icon-alert"/>
+                            <f:attribute name="tipoEntidadeSelecionado" value="#{tpEntidade}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" actionListener="#{tipoEntidadeBean.editar}"
+                                         update=":mensagem :formCadastro:painel"
+                                         oncomplete="PF('dlgtpEntidade').show()">
+
+                            <f:attribute name="tipoEntidadeSelecionado" value="#{tpEntidade}"/>
+                        </p:commandButton>
+
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Sim" type="button"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" 
+                                     styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </p:panel>
+        </h:form>
+
+        <p:dialog header="Cadastro de Tipo de Entidades" widgetVar="dlgtpEntidade" draggable="false" 
+                  resizable="false" modal="false">
+            <h:form id="formCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel for="nome" value="Nome:"/>
+                    <p:inputText id="nome" maxlength="60" size="30" value="#{tipoEntidadeBean.tipoEntidade.descricao}">
+                        <p:ajax event="blur" update=":formCadastro:nome"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Data Cadastro: "/>
+                    <p:inputText value="#{tipoEntidadeBean.tipoEntidade.dataCadastro}">
+                        <f:convertDateTime locale="pt_BR" timeZone="GMT-3"/> 
+                    </p:inputText>
+
+                </h:panelGrid>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Salvar" actionListener="#{tipoEntidadeBean.salvar()}"
+                                     update=":mensagem :formCadastro:painel :formListagem:tabela"/>
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgtpEntidade').hide();"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+
+
+

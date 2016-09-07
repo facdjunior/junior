@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f='http://xmlns.jcp.org/jsf/core'
+      xmlns:p='http://primefaces.org/ui'>
+    <h:head>
+        <title>Cadastro de Entidade</title>
+    </h:head>
+    <h:body>
+        <p:growl id="mensagem"/>
+        <h:form id="frmLista">
+            <p:panel header="Cadastros de entidades">
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado."
+                             paginator="true" value="#{entidadeBean.entidades}" var="entidade"
+                             rows="10">
+                    <f:facet name="footer">
+                        <p:commandButton value="Novo" actionListener="#{entidadeBean.novo}"
+                                         oncomplete="PF('dlgEntidade').show();"
+                                         update=":mensagem :frmCadastro:painel :frmCadastro:painel1">
+                            <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
+                        </p:commandButton>
+                    </f:facet>
+
+                    <p:column headerText="Nome">
+                        <h:outputText value="#{entidade.codigo}"/>
+                    </p:column>
+
+                    <p:column headerText="CNES">
+                        <h:outputText value="#{entidade.codigoCNES}"/>
+                    </p:column>
+
+                    <p:column headerText="CNPJ">
+                        <h:outputText value="#{entidade.pessoaJuridica.CNPJ}"/>
+                    </p:column>
+
+                    <p:column headerText="Razão Social">
+                        <h:outputText value="#{entidade.pessoaJuridica.razaoSocial}"/>
+                    </p:column>
+
+                    <p:column headerText="Nome Fantasia">
+                        <h:outputText value="#{entidade.pessoa.nome}"/>
+                    </p:column>
+
+                    <p:column headerText="Opções">
+                        <p:commandButton icon="ui-icon-trash"
+                                         actionListener="#{entidadeBean.excluir}"
+                                         update=":mensagem :frmLista:tabela">
+                            <p:confirm header="Exclusão registro"
+                                       message="Deseja excluir a entidade?" icon="ui-icon-alert" />
+                            <f:attribute name="entidadeSelecionada" value="#{entidade}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-pencil"
+                                         actionListener="#{entidadeBean.Editar}"
+                                         update=":mensagem :frmCadastro:painel"
+                                         oncomplete="PF('dlgEntidade').show();">
+                            <f:attribute name="entidadeSelecionada" value="#{entidade}" />
+                            <f:actionListener
+                                type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Sim" type="button"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button"
+                                     styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </p:panel>
+        </h:form>
+
+        <p:dialog header="Cadastro de entidade" widgetVar="dlgEntidade" draggable="false"
+                  resizable="false" modal="true" closable="false">
+            <h:form id="frmCadastro">
+                <p:panel id="pnlDadosPessoais" header="Dados Empresa" style="margin-top: 20px">
+
+                    <p:focus context="pnlDadosPessoais"/>
+
+                    <h:panelGrid id="painel" columns="4">
+                        <p:outputLabel for="nome" value="Nome Fantazia:"/>
+                        <p:inputText id="nome" maxlength="50" size="34"
+                                     value="#{entidadeBean.pessoa.nome}" required="true"
+                                     requiredMessage="Favor informe o campo Nome"/>
+
+                        <p:outputLabel for="razao" value="Razão Social:"/>
+                        <p:inputText id="razao" maxlength="50" size="34" value="#{entidadeBean.pessoaJuridica.razaoSocial}"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="painel1" columns="9">
+                        <p:outputLabel for="inscEstadual" value="Insc. Estadual:"/>
+                        <p:inputText id="inscEstadual" size="13" value="#{entidadeBean.pessoaJuridica.insEstadual}"/>
+
+                        <p:outputLabel for="inscMunicipal" value="Insc. Municipal:"/>
+                        <p:inputText id="inscMunicipal" size="13" value="#{entidadeBean.pessoaJuridica.inscMunicipal}"/>
+
+                        <p:outputLabel for="cnpj" value="CNPJ: "/>
+                        <p:inputMask mask="99.999.999/9999-99" id="cnpj" size="18" value="#{entidadeBean.pessoaJuridica.CNPJ}"
+                                     required="true" requiredMessage="Favor informe o campo CNPJ"/>
+
+                        <p:outputLabel for="CNES" value="CNES"/>
+                        <p:inputText id="CNES" size="10" value="#{entidadeBean.entidade.codigoCNES}"/>
+                    </h:panelGrid>
+                    <h:panelGrid id="panel2" columns="2">
+                       
+                  <p:outputLabel for="estado" value="Estado:"/>
+                  <p:selectOneMenu id="estado" filter="true" value="#{entidadeBean.entidade.tipoEntidade}"
+                                     required="true" requiredMessage="Favor informe ramo de atividade!">
+                        <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione Ramo de Atividade"/>
+                        <f:selectItems value="#{entidadeBean.tipoEntidades}" />
+                    </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+            </h:form>
+        </p:dialog>
+
+    </h:body>
+</html>
+
