@@ -17,7 +17,7 @@
                     <f:facet name="footer">
                         <p:commandButton value="Novo" actionListener="#{entidadeBean.novo}"
                                          oncomplete="PF('dlgEntidade').show();"
-                                         update=":mensagem :frmCadastro:painel :frmCadastro:painel1">
+                                         update=":mensagem :frmCadastro:painel :frmCadastro:painel1 :frmCadastro:painel2">
                             <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
                     </f:facet>
@@ -102,14 +102,74 @@
                         <p:outputLabel for="CNES" value="CNES"/>
                         <p:inputText id="CNES" size="10" value="#{entidadeBean.entidade.codigoCNES}"/>
                     </h:panelGrid>
-                    <h:panelGrid id="panel2" columns="2">
+                    <h:panelGrid id="painel2" columns="2">
                        
-                  <p:outputLabel for="estado" value="Estado:"/>
-                  <p:selectOneMenu id="estado" filter="true" value="#{entidadeBean.entidade.tipoEntidade}"
+                  <p:outputLabel for="tpentidade" value="Ramo de Atividade"/>
+                  <p:selectOneMenu id="tpentidade"
                                      required="true" requiredMessage="Favor informe ramo de atividade!">
                         <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione Ramo de Atividade"/>
-                        <f:selectItems value="#{entidadeBean.tipoEntidades}" />
+                        <f:selectItems value="#{entidadeBean.tpentidade}" var="tpentidade"
+                                       itemValue="#{tpentidade}" itemLabel="#{tpentidade.descricao}"/>
                     </p:selectOneMenu>
+                    </h:panelGrid>
+                </p:panel>
+                <p:panel id="pnlEndereco" header="Endereço">
+                    <h:panelGrid id="painel3" columns="6">
+                        <p:outputLabel for="estado" value="Estado"/>
+                    <p:selectOneMenu id="estado" filter="true" 
+                                     converter="omnifaces.SelectItemsConverter"
+                                     value="#{pessoaBean.estado}">
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um estado"/>
+                        <f:selectItems value="#{pessoaBean.estados}" var="estados" itemValue="#{estado}" 
+                                       itemLabel="#{estados.nome} - #{estados.sigla}"/>
+                        <p:ajax listener="#{pessoaBean.popular}" update=":frmCadastro:cidade"/>
+
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="cidade" value="Cidade"/>
+                    <p:selectOneMenu id="cidade" filter="true" required="true"
+                                     requiredMessage="Favor informe campo Cidade"
+                                     converter="omnifaces.SelectItemsConverter"
+                                     value="#{pessoaBean.pessoa.cidade}">
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione uma cidade"/>
+                        <f:selectItems value="#{pessoaBean.cidades}" var="cidade"
+                                       itemValue="#{cidade}" itemLabel="#{cidade.nome}" />
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="rua" value="Rua:"/>
+                    <p:inputText id="rua" maxlength="80" size="30"
+                                 value="#{pessoaBean.pessoa.rua}" required="true"
+                                 requiredMessage="Campo Rua é obrigatório" />
+
+                    <p:outputLabel value="Número"/>
+                    <p:inputText maxlength="5" size="10"
+                                 value="#{pessoaBean.pessoa.numero}" required="false"
+                                 converterMessage="Informe um valor válido"
+                                 validatorMessage="Informe somente números">
+                        <f:validateLongRange minimum="0" maximum="50000"/>
+                    </p:inputText>
+
+                    <p:outputLabel for="bairro" value="Bairro:" />
+                    <p:inputText id="bairro" maxlength="30" size="28"
+                                 value="#{pessoaBean.pessoa.bairro}" required="true"
+                                 requiredMessage="O campo 'Bairro' é obrigatório" />
+
+                    <p:outputLabel for="cep" value="CEP:" />
+                    <p:inputMask id="cep" mask="99.999-999" size="11"
+                                 value="#{pessoaBean.pessoa.cep}"/>
+
+                    <p:outputLabel for="complemento" value="Complemento:" />
+                    <p:inputText id="complemento" maxlength="30" size="18"
+                                 value="#{pessoaBean.pessoa.complemento}" />
+
+                    <p:outputLabel for="telefone" value="Telefone:" />
+                    <p:inputMask id="telefone" mask="(99)9999-9999" size="14"
+                                 value="#{pessoaBean.pessoa.telefone}"/>
+
+                    <p:outputLabel for="celular" value="Celular:" />
+                    <p:inputMask id="celular" mask="(99)9999-9999" size="14"
+                                 value="#{pessoaBean.pessoa.celula}"/>
+
                     </h:panelGrid>
                 </p:panel>
             </h:form>
