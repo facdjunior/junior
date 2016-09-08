@@ -21,22 +21,13 @@ import org.omnifaces.util.Messages;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
-public class CidadeBean implements Serializable{
+public class CidadeBean implements Serializable {
+
     private Cidade cidade;
     private List<Cidade> cidades;
     private List<Estado> estados;
-    private List<TipoEntidade> entidades;
-
-    public List<TipoEntidade> getEntidades() {
-        return entidades;
-    }
-
-    public void setEntidades(List<TipoEntidade> entidades) {
-        this.entidades = entidades;
-    }
-
     
-    
+
     public Cidade getCidade() {
         return cidade;
     }
@@ -60,77 +51,76 @@ public class CidadeBean implements Serializable{
     public void setEstados(List<Estado> estados) {
         this.estados = estados;
     }
-    
-    
+
     @PostConstruct
-    public void listar(){
+    public void listar() {
         try {
             CidadeDAO cidadeDAO = new CidadeDAO();
             cidades = cidadeDAO.listar("nome");
-            
+
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao listar Cidades");
             erro.printStackTrace();
         }
     }
-    
-    public void novo(){
-        try{
-        cidade = new Cidade();
-        
-        EstadoDAO estadoDAO = new EstadoDAO();
-        estados = estadoDAO.listar("nome");
-        
-            TipoEntidadeDAO tedao = new TipoEntidadeDAO();
-            entidades = tedao.listar("descricao");
-        
-        }catch(RuntimeException erro){
+
+    public void novo() {
+        try {
+            cidade = new Cidade();
+
+            EstadoDAO estadoDAO = new EstadoDAO();
+            estados = estadoDAO.listar("nome");
+
+
+        } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao carregar cadastro de estado!");
             erro.printStackTrace();
         }
-        }
-    public void salvar(){
+    }
+
+    public void salvar() {
         try {
             CidadeDAO cidadeDAO = new CidadeDAO();
             cidadeDAO.merge(cidade);
-            
+
             cidade = new Cidade();
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
-            
+
             cidades = cidadeDAO.listar();
-            
+
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao tentar gravar registro!");
         }
-        }
-    public void excluir(ActionEvent evento){
+    }
+
+    public void excluir(ActionEvent evento) {
         try {
             cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionado");
             CidadeDAO cidadeDAO = new CidadeDAO();
             cidadeDAO.excluir(cidade);
-            
+
             cidades = cidadeDAO.listar();
-            
+
             Messages.addGlobalInfo("Cidade removida com Sucesso");
-        
+
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao tentar remover a cidade");
             erro.printStackTrace();
         }
     }
-    
-    public void Editar(ActionEvent evento){
-        try{
-        cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionado");
-        
-        EstadoDAO estadoDAO = new EstadoDAO();
-        estados = estadoDAO.listar();
-        
-        }catch(RuntimeException erro){
+
+    public void Editar(ActionEvent evento) {
+        try {
+            cidade = (Cidade) evento.getComponent().getAttributes().get("cidadeSelecionado");
+
+            EstadoDAO estadoDAO = new EstadoDAO();
+            estados = estadoDAO.listar();
+
+        } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao editar registro");
             erro.printStackTrace();
         }
-        
+
     }
 }
