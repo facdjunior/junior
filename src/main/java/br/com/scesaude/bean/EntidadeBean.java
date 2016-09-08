@@ -39,7 +39,7 @@ public class EntidadeBean implements Serializable {
     private Bairro bairro;
     private List<Bairro> bairros;
     private List<Estado> estados;
-    private List<TipoEntidade> tipoEntidades;
+    private List<TipoEntidade> tpentidade;
 
     public Entidade getEntidade() {
         return entidade;
@@ -129,12 +129,12 @@ public class EntidadeBean implements Serializable {
         this.bairro = bairro;
     }
 
-    public List<TipoEntidade> getTipoEntidades() {
-        return tipoEntidades;
+    public List<TipoEntidade> getTpentidade() {
+        return tpentidade;
     }
 
-    public void setTipoEntidades(List<TipoEntidade> tipoEntidades) {
-        this.tipoEntidades = tipoEntidades;
+    public void setTpentidade(List<TipoEntidade> tpentidade) {
+        this.tpentidade = tpentidade;
     }
 
     @PostConstruct
@@ -142,9 +142,6 @@ public class EntidadeBean implements Serializable {
         try {
             EntidadeDAO entidadeDAO = new EntidadeDAO();
             entidades = entidadeDAO.listar("codigo");
-
-            TipoEntidadeDAO tipoEntidadeDAO = new TipoEntidadeDAO();
-            tipoEntidades = tipoEntidadeDAO.listar("descricao");
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao listar Cidades");
@@ -155,8 +152,12 @@ public class EntidadeBean implements Serializable {
     public void novo() {
         try {
             entidade = new Entidade();
-
-       
+            
+            EstadoDAO estadoDAO = new EstadoDAO();
+            estados = estadoDAO.listar("nome");
+            
+            TipoEntidadeDAO tedao = new TipoEntidadeDAO();
+            tpentidade = tedao.listar("codigo");
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao carregar cadastro de estado!");
