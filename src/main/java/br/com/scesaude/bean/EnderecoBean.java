@@ -2,10 +2,12 @@ package br.com.scesaude.bean;
 
 import br.com.scesaude.dao.BairroDAO;
 import br.com.scesaude.dao.CidadeDAO;
+import br.com.scesaude.dao.EnderecoDAO;
 import br.com.scesaude.dao.EstadoDAO;
 import br.com.scesaude.dao.TipoEntidadeDAO;
 import br.com.scesaude.domain.Bairro;
 import br.com.scesaude.domain.Cidade;
+import br.com.scesaude.domain.Endereco;
 import br.com.scesaude.domain.Estado;
 import br.com.scesaude.domain.TipoEntidade;
 import java.io.Serializable;
@@ -24,8 +26,10 @@ import org.omnifaces.util.Messages;
 @SuppressWarnings("serial")
 @ManagedBean
 @ViewScoped
-public class BairroBean implements Serializable {
+public class EnderecoBean implements Serializable {
 
+    private Endereco endereco;
+    private List<Endereco> enderecos;
     private Bairro bairro;
     private List<Bairro> bairros;
     private Cidade cidade;
@@ -33,6 +37,22 @@ public class BairroBean implements Serializable {
     private List<Estado> estados;
     private Estado estado;
 
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+    
     public Bairro getBairro() {
         return bairro;
     }
@@ -84,21 +104,24 @@ public class BairroBean implements Serializable {
     @PostConstruct
     public void listar() {
         try {
-            BairroDAO bairroDAO = new BairroDAO();
-            bairros = bairroDAO.listar("descricao");
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            enderecos = enderecoDAO.listar("logradouro");
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao listar Bairros");
+            Messages.addGlobalError("Erro ao listar Enderecos");
             erro.printStackTrace();
         }
     }
 
     public void novo() {
         try {
-            bairro = new Bairro();
+            endereco = new Endereco();
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar("nome");
+            
+            BairroDAO bairroDAO = new BairroDAO();
+            bairros = bairroDAO.listar("descricao");
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao carregar cadastro de estado!");
@@ -108,14 +131,14 @@ public class BairroBean implements Serializable {
 
     public void salvar() {
         try {
-            BairroDAO bairroDAO = new BairroDAO();
-            bairroDAO.merge(bairro);
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            enderecoDAO.merge(endereco);
 
-            bairro = new Bairro();
+            novo();
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
 
-            bairros = bairroDAO.listar();
+            enderecos = enderecoDAO.listar();
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao tentar gravar registro!");
@@ -124,23 +147,23 @@ public class BairroBean implements Serializable {
 
     public void excluir(ActionEvent evento) {
         try {
-            bairro = (Bairro) evento.getComponent().getAttributes().get("bairroSelecionado");
-            BairroDAO bairroDAO = new BairroDAO();
-            bairroDAO.excluir(bairro);
+            endereco = (Endereco) evento.getComponent().getAttributes().get("enderecoSelecionado");
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            enderecoDAO.excluir(endereco);
 
-            bairros = bairroDAO.listar();
+            enderecos = enderecoDAO.listar();
 
-            Messages.addGlobalInfo("Bairro removido com Sucesso");
+            Messages.addGlobalInfo("Endereço removido com Sucesso");
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao tentar remover Bairro");
+            Messages.addGlobalError("Ocorreu um erro ao tentar remover Endereço");
             erro.printStackTrace();
         }
     }
 
     public void Editar(ActionEvent evento) {
         try {
-            bairro = (Bairro) evento.getComponent().getAttributes().get("bairroSelecionado");
+            endereco = (Endereco) evento.getComponent().getAttributes().get("enderecoSelecionado");
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
@@ -148,34 +171,6 @@ public class BairroBean implements Serializable {
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao editar registro");
             erro.printStackTrace();
-        }
-    }
-
-    public void popular() {
-        try {
-            if (estado != null) {
-                CidadeDAO cidadeDAO = new CidadeDAO();
-                cidades = cidadeDAO.buscaPorEstado(estado.getCodigo());
-
-            } else {
-                cidades = new ArrayList<>();
-            }
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao listar cidades");
-        }
-    }
-    
-    public void popularCidade() {
-        try {
-            if (bairro != null) {
-                CidadeDAO cidadeDAO = new CidadeDAO();
-                cidades = cidadeDAO.buscaPorEstado(bairro.getCidade().getCodigo());
-
-            } else {
-                cidades = new ArrayList<>();
-            }
-        } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao listar cidades");
         }
     }
 }

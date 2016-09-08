@@ -12,23 +12,42 @@ import org.hibernate.criterion.Restrictions;
  *
  * @author Francisco Alves
  */
-public class CidadeDAO extends GenericDAO<Cidade>{
-    
+public class CidadeDAO extends GenericDAO<Cidade> {
+
     @SuppressWarnings("unchecked")
-    public List<Cidade> buscaPorEstado(Long estadoCodigo){
+    public List<Cidade> buscaPorEstado(Long estadoCodigo) {
         Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
-        
+
         try {
             Criteria consulta = sessao.createCriteria(Cidade.class);
             consulta.add(Restrictions.eq("estado.codigo", estadoCodigo));
-            
+
             consulta.addOrder(Order.asc("nome"));
             List<Cidade> resultado = consulta.list();
             return resultado;
-            
+
         } catch (RuntimeException erro) {
             throw erro;
-        }finally{
+        } finally {
+            sessao.close();
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Cidade> buscaPorBairro(Long bairroCodigo) {
+        Session sessao = HibernateUtil.getFabricaDeSessoes().openSession();
+
+        try {
+            Criteria consulta = sessao.createCriteria(Cidade.class);
+            consulta.add(Restrictions.eq("codigo", bairroCodigo));
+
+            consulta.addOrder(Order.asc("nome"));
+            List<Cidade> resultado = consulta.list();
+            return resultado;
+
+        } catch (RuntimeException erro) {
+            throw erro;
+        } finally {
             sessao.close();
         }
     }

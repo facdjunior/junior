@@ -2,6 +2,7 @@ package br.com.scesaude.domain;
 
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -24,7 +25,7 @@ public class Pessoa extends GenericDomain{
     @Column(length = 1)
     private Character sexo;
     private Integer Sequencia;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Entidade entidade;
     @Temporal(TemporalType.TIMESTAMP)
     private Date DataCadastro;

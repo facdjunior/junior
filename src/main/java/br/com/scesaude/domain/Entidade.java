@@ -23,6 +23,8 @@ public class Entidade extends GenericDomain {
     private Endereco endereco;
     @ManyToOne(cascade = CascadeType.ALL)
     private PessoaJuridica pessoaJuridica;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Contato contato;
     @Column(length = 80)
     private String ChaveMaster;
     @ManyToOne
@@ -93,6 +95,14 @@ public class Entidade extends GenericDomain {
 
     public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
         this.pessoaJuridica = pessoaJuridica;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
     }
 
 }

@@ -67,28 +67,19 @@
 
                     <p:outputLabel for="nome" value="Nome:"/>
                     <p:inputText id="nome" maxlength="120" size="30" value="#{cidadeBean.cidade.nome}"
-                                 required="true"  converter="upperCaseConverter" requiredMessage="Favor informe campo Nome!">
+                                 required="true"  converter="upperCaseConverter" 
+                                 requiredMessage="Favor informe campo Nome!">
                         <p:ajax event="blur" update=":frmCadastro:nome"/>
                     </p:inputText>
 
                     <p:outputLabel for="estado" value="Estado:"/>
-                    <p:selectOneMenu id="estado" filter="true" 
+                    <p:selectOneMenu id="estado" filter="true" value="#{cidadeBean.cidade.estado}"
                                      converter="omnifaces.SelectItemsConverter"
                                      required="true" requiredMessage="Favor informe Estado!">
                         <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione um Estado"/>
                         <f:selectItems value="#{cidadeBean.estados}" var="estado"
                                        itemValue="#{estado}" itemLabel="#{estado.nome}- #{estado.sigla}"/>
                     </p:selectOneMenu>
-                    
-                    <p:outputLabel for="estado1" value="Ramo de Atividade:"/>
-                    <p:selectOneMenu id="estado1" 
-                                     converter="omnifaces.SelectItemsConverter"
-                                     required="true" requiredMessage="Favor informe Estado!">
-                        <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione um Estado"/>
-                        <f:selectItems value="#{cidadeBean.entidades}" var="estado"
-                                       itemValue="#{estado}" itemLabel="#{estado.descricao}"/>
-                    </p:selectOneMenu>
-                    
                 </h:panelGrid>
                 <h:panelGrid columns="2">
 

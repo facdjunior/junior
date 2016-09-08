@@ -1,5 +1,6 @@
 package br.com.scesaude.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -25,7 +26,7 @@ public class Contato extends GenericDomain{
     private String site;
     @Column(length = 60)
     private String skype;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
 

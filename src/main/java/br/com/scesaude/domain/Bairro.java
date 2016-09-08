@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 @Entity
 public class Bairro extends GenericDomain{
     @Column(length = 120)
-    private String Descricao;
+    private String descricao;
     @ManyToOne
     @JoinColumn(nullable = false)
     private Cidade cidade;
@@ -27,11 +27,11 @@ public class Bairro extends GenericDomain{
     private Date DataCadastro;
 
     public String getDescricao() {
-        return Descricao;
+        return descricao;
     }
 
-    public void setDescricao(String Descricao) {
-        this.Descricao = Descricao;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Cidade getCidade() {

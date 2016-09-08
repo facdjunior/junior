@@ -1,10 +1,14 @@
 package br.com.scesaude.bean;
 
 import br.com.scesaude.dao.BairroDAO;
+import br.com.scesaude.dao.CidadeDAO;
+import br.com.scesaude.dao.EnderecoDAO;
 import br.com.scesaude.dao.EntidadeDAO;
 import br.com.scesaude.dao.EstadoDAO;
 import br.com.scesaude.dao.TipoEntidadeDAO;
 import br.com.scesaude.domain.Bairro;
+import br.com.scesaude.domain.Cidade;
+import br.com.scesaude.domain.Contato;
 import br.com.scesaude.domain.Endereco;
 import br.com.scesaude.domain.Entidade;
 import br.com.scesaude.domain.Estado;
@@ -12,6 +16,7 @@ import br.com.scesaude.domain.Pessoa;
 import br.com.scesaude.domain.PessoaJuridica;
 import br.com.scesaude.domain.TipoEntidade;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -38,8 +43,12 @@ public class EntidadeBean implements Serializable {
     private List<Endereco> enderecos;
     private Bairro bairro;
     private List<Bairro> bairros;
+    private Estado estado;
     private List<Estado> estados;
     private List<TipoEntidade> tpentidade;
+    private List<Cidade> cidades;
+    private Cidade cidade;
+    private Contato contato;
 
     public Entidade getEntidade() {
         return entidade;
@@ -137,6 +146,41 @@ public class EntidadeBean implements Serializable {
         this.tpentidade = tpentidade;
     }
 
+    public List<Cidade> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(List<Cidade> cidades) {
+        this.cidades = cidades;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
+    }
+    
+    
+    
+
     @PostConstruct
     public void listar() {
         try {
@@ -152,15 +196,25 @@ public class EntidadeBean implements Serializable {
     public void novo() {
         try {
             entidade = new Entidade();
-            
+            pessoa = new Pessoa();
+            endereco = new Endereco();
+            pessoaJuridica = new PessoaJuridica();
+            contato = new Contato();
+
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar("nome");
-            
+
             TipoEntidadeDAO tedao = new TipoEntidadeDAO();
             tpentidade = tedao.listar("codigo");
+            
+            BairroDAO bdao = new BairroDAO();
+            bairros = bdao.listar("descricao");
+            
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            enderecos = enderecoDAO.listar("logradouro");
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao carregar cadastro de estado!");
+            Messages.addGlobalError("Erro ao carregar cadastro de estado!"+erro);
             erro.printStackTrace();
         }
     }
@@ -169,20 +223,28 @@ public class EntidadeBean implements Serializable {
         try {
             EntidadeDAO entidadeDAO = new EntidadeDAO();
             // Inicia nova Pessoa
-            pessoa = new Pessoa();
+            
             //Grava nova Pessoa
             entidade.setPessoa(pessoa);
+            pessoa.setEntidade(entidade);
             // Inicia novo Cadastro Endereço
-            endereco = new Endereco();
+            
             // Grava Novo Endereço
             entidade.setEndereco(endereco);
+            endereco.setBairro(bairro);
+            endereco.setPessoa(pessoa);
+            endereco.setEntidade(entidade);
             //Inicia Novo Cadastro Pessoa Juridica
-            pessoaJuridica = new PessoaJuridica();
+            entidade.setContato(contato);
+            contato.setPessoa(pessoa);
+            
             //Grava Novo Pessoa Juridica
             entidade.setPessoaJuridica(pessoaJuridica);
+            pessoaJuridica.setPessoa(pessoa);
+            pessoaJuridica.setEntidade(entidade);
             //Receber Codigo Entidade e popula nos novos Registros "Pessoa", "Endereço", "Pessoa Juridica"
             entidadeDAO.merge(entidade);
-
+            novo();
             entidade = new Entidade();
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
@@ -190,7 +252,8 @@ public class EntidadeBean implements Serializable {
             entidades = entidadeDAO.listar();
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao tentar gravar registro!");
+            Messages.addGlobalError("Erro ao tentar gravar registro!"+erro);
+            System.out.println(erro);
         }
     }
 
@@ -224,6 +287,34 @@ public class EntidadeBean implements Serializable {
             Messages.addGlobalError("Ocorreu um erro ao editar registro");
             erro.printStackTrace();
         }
+    }
 
+    public void popular() {
+        try {
+            if (estado != null) {
+                CidadeDAO cidadeDAO = new CidadeDAO();
+                cidades = cidadeDAO.buscaPorEstado(estado.getCodigo());
+
+            } else {
+                cidades = new ArrayList<>();
+            }
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Erro ao listar cidades");
+        }
+    }
+    public void popularBairro() {
+        try {
+            if (bairro != null) {
+                CidadeDAO cidadeDAO = new CidadeDAO();
+                cidades = cidadeDAO.buscaPorBairro(bairro.getCidade().getCodigo());
+                EstadoDAO estadoDAO = new EstadoDAO();
+                
+
+            } else {
+                cidades = new ArrayList<>();
+            }
+        } catch (RuntimeException erro) {
+            Messages.addGlobalError("Erro ao listar cidades");
+        }
     }
 }

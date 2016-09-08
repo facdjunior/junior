@@ -26,7 +26,6 @@ public class CidadeBean implements Serializable {
     private Cidade cidade;
     private List<Cidade> cidades;
     private List<Estado> estados;
-    
 
     public Cidade getCidade() {
         return cidade;
@@ -71,7 +70,6 @@ public class CidadeBean implements Serializable {
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar("nome");
 
-
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao carregar cadastro de estado!");
             erro.printStackTrace();
@@ -90,7 +88,7 @@ public class CidadeBean implements Serializable {
             cidades = cidadeDAO.listar();
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao tentar gravar registro!");
+            Messages.addGlobalError("Erro ao tentar gravar registro!"+erro);
         }
     }
 
