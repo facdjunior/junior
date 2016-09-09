@@ -54,7 +54,9 @@
 
                         <p:commandButton icon="ui-icon-pencil"
                                          actionListener="#{entidadeBean.Editar}"
-                                         update=":mensagem :frmCadastro:painel"
+                                         update="mensagem :frmCadastro:painel 
+                                     :frmCadastro:painel1 :frmCadastro:painel2 
+                                     :frmCadastro:painel3 :frmCadastro:painel4"
                                          oncomplete="PF('dlgEntidade').show();">
                             <f:attribute name="entidadeSelecionada" value="#{entidade}" />
                             <f:actionListener
@@ -97,7 +99,8 @@
                         <p:inputText id="inscMunicipal" size="13" value="#{entidadeBean.pessoaJuridica.inscMunicipal}"/>
 
                         <p:outputLabel for="cnpj" value="CNPJ: "/>
-                        <p:inputMask mask="99.999.999/9999-99" id="cnpj" size="18" value="#{entidadeBean.pessoaJuridica.CNPJ}"
+                        <p:inputMask mask="99.999.999/9999-99" id="cnpj" size="18" 
+                                     value="#{entidadeBean.pessoaJuridica.CNPJ}" 
                                      required="true" requiredMessage="Favor informe o campo CNPJ"/>
 
                         <p:outputLabel for="CNES" value="CNES"/>
@@ -106,8 +109,7 @@
                     <h:panelGrid id="painel2" columns="2">
 
                         <p:outputLabel for="tpentidade" value="Ramo de Atividade"/>
-                        <p:selectOneMenu id="tpentidade"
-                                         required="true" requiredMessage="Favor informe ramo de atividade!">
+                        <p:selectOneMenu id="tpentidade">
                             <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione Ramo de Atividade"/>
                             <f:selectItems value="#{entidadeBean.tpentidade}" var="tpentidade"
                                            itemValue="#{tpentidade}" itemLabel="#{tpentidade.descricao}"/>

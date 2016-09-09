@@ -2,9 +2,12 @@ package br.com.scesaude.bean;
 
 import br.com.scesaude.dao.BairroDAO;
 import br.com.scesaude.dao.CidadeDAO;
+import br.com.scesaude.dao.ContatoDAO;
 import br.com.scesaude.dao.EnderecoDAO;
 import br.com.scesaude.dao.EntidadeDAO;
 import br.com.scesaude.dao.EstadoDAO;
+import br.com.scesaude.dao.PessoaDAO;
+import br.com.scesaude.dao.PessoaJuridicaDAO;
 import br.com.scesaude.dao.TipoEntidadeDAO;
 import br.com.scesaude.domain.Bairro;
 import br.com.scesaude.domain.Cidade;
@@ -45,10 +48,12 @@ public class EntidadeBean implements Serializable {
     private List<Bairro> bairros;
     private Estado estado;
     private List<Estado> estados;
+    private TipoEntidade tipoEntidade;
     private List<TipoEntidade> tpentidade;
     private List<Cidade> cidades;
     private Cidade cidade;
     private Contato contato;
+    private List<Contato> contatos;
 
     public Entidade getEntidade() {
         return entidade;
@@ -106,6 +111,14 @@ public class EntidadeBean implements Serializable {
         this.estados = estados;
     }
 
+    public TipoEntidade getTipoEntidade() {
+        return tipoEntidade;
+    }
+
+    public void setTipoEntidade(TipoEntidade tipoEntidade) {
+        this.tipoEntidade = tipoEntidade;
+    }
+    
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -177,6 +190,14 @@ public class EntidadeBean implements Serializable {
     public void setContato(Contato contato) {
         this.contato = contato;
     }
+
+    public List<Contato> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
+    }
     
     
     
@@ -238,6 +259,12 @@ public class EntidadeBean implements Serializable {
             entidade.setContato(contato);
             contato.setPessoa(pessoa);
             
+            entidade.setTipoEntidade(tipoEntidade);
+            tipoEntidade.setEntidade(entidade);
+            
+            
+           
+            
             //Grava Novo Pessoa Juridica
             entidade.setPessoaJuridica(pessoaJuridica);
             pessoaJuridica.setPessoa(pessoa);
@@ -276,12 +303,34 @@ public class EntidadeBean implements Serializable {
     public void Editar(ActionEvent evento) {
         try {
             entidade = (Entidade) evento.getComponent().getAttributes().get("entidadeSelecionada");
+            bairro = entidade.getEndereco().getBairro();
+            pessoa = entidade.getPessoaJuridica().getPessoa();
+            pessoaJuridica = entidade.getPessoa().getEntidade().getPessoaJuridica();
+            endereco = entidade.getPessoa().getEntidade().getEndereco();
+            contato = entidade.getPessoa().getEntidade().getContato();
+            tipoEntidade = entidade.getPessoaJuridica().getEntidade().getTipoEntidade();
+           
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
-
+            
+            CidadeDAO cidadeDAO = new CidadeDAO();
+            cidades = cidadeDAO.listar();
+           
+            PessoaDAO pessoaDAO = new PessoaDAO();
+            pessoas = pessoaDAO.listar();
+            
             BairroDAO bairroDAO = new BairroDAO();
             bairros = bairroDAO.listar();
+            
+            TipoEntidadeDAO tipoEntidadeDAO = new TipoEntidadeDAO();
+            tpentidade = tipoEntidadeDAO.listar();
+            
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
+            enderecos = enderecoDAO.listar();
+            
+            ContatoDAO contatoDAO = new ContatoDAO();
+            contatos = contatoDAO.listar();
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Ocorreu um erro ao editar registro");
