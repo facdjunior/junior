@@ -118,7 +118,7 @@ public class EntidadeBean implements Serializable {
     public void setTipoEntidade(TipoEntidade tipoEntidade) {
         this.tipoEntidade = tipoEntidade;
     }
-    
+
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -198,9 +198,6 @@ public class EntidadeBean implements Serializable {
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
     }
-    
-    
-    
 
     @PostConstruct
     public void listar() {
@@ -221,21 +218,27 @@ public class EntidadeBean implements Serializable {
             endereco = new Endereco();
             pessoaJuridica = new PessoaJuridica();
             contato = new Contato();
+            tipoEntidade = new TipoEntidade();
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar("nome");
 
             TipoEntidadeDAO tedao = new TipoEntidadeDAO();
             tpentidade = tedao.listar("codigo");
-            
+
             BairroDAO bdao = new BairroDAO();
             bairros = bdao.listar("descricao");
             
+            bairro = new Bairro();
+
             EnderecoDAO enderecoDAO = new EnderecoDAO();
             enderecos = enderecoDAO.listar("logradouro");
 
+            cidades = new ArrayList<Cidade>();
+            Messages.addGlobalInfo("Registro salvo com Sucesso!");
+            
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao carregar cadastro de estado!"+erro);
+            Messages.addGlobalError("Erro ao carregar cadastro de estado!" + erro);
             erro.printStackTrace();
         }
     }
@@ -244,42 +247,39 @@ public class EntidadeBean implements Serializable {
         try {
             EntidadeDAO entidadeDAO = new EntidadeDAO();
             // Inicia nova Pessoa
-            
+
             //Grava nova Pessoa
             entidade.setPessoa(pessoa);
             pessoa.setEntidade(entidade);
-            // Inicia novo Cadastro Endereço
-            
+
             // Grava Novo Endereço
             entidade.setEndereco(endereco);
             endereco.setBairro(bairro);
             endereco.setPessoa(pessoa);
             endereco.setEntidade(entidade);
-            //Inicia Novo Cadastro Pessoa Juridica
+
+            //Inicia Novo Contato
             entidade.setContato(contato);
             contato.setPessoa(pessoa);
-            
+
+            //Gravar Tipo Entidade
             entidade.setTipoEntidade(tipoEntidade);
             tipoEntidade.setEntidade(entidade);
-            
-            
-           
-            
+
             //Grava Novo Pessoa Juridica
             entidade.setPessoaJuridica(pessoaJuridica);
             pessoaJuridica.setPessoa(pessoa);
             pessoaJuridica.setEntidade(entidade);
             //Receber Codigo Entidade e popula nos novos Registros "Pessoa", "Endereço", "Pessoa Juridica"
+            
             entidadeDAO.merge(entidade);
             novo();
             entidade = new Entidade();
-            EstadoDAO estadoDAO = new EstadoDAO();
-            estados = estadoDAO.listar();
-
+            
             entidades = entidadeDAO.listar();
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Erro ao tentar gravar registro!"+erro);
+            Messages.addGlobalError("Erro ao tentar gravar registro!" + erro);
             System.out.println(erro);
         }
     }
@@ -308,27 +308,26 @@ public class EntidadeBean implements Serializable {
             pessoaJuridica = entidade.getPessoa().getEntidade().getPessoaJuridica();
             endereco = entidade.getPessoa().getEntidade().getEndereco();
             contato = entidade.getPessoa().getEntidade().getContato();
-            tipoEntidade = entidade.getPessoaJuridica().getEntidade().getTipoEntidade();
-           
+            tipoEntidade = entidade.getPessoaJuridica().getPessoa().getEntidade().getTipoEntidade();
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();
-            
+
             CidadeDAO cidadeDAO = new CidadeDAO();
             cidades = cidadeDAO.listar();
-           
+
             PessoaDAO pessoaDAO = new PessoaDAO();
             pessoas = pessoaDAO.listar();
-            
+
             BairroDAO bairroDAO = new BairroDAO();
             bairros = bairroDAO.listar();
-            
+
             TipoEntidadeDAO tipoEntidadeDAO = new TipoEntidadeDAO();
             tpentidade = tipoEntidadeDAO.listar();
-            
+
             EnderecoDAO enderecoDAO = new EnderecoDAO();
             enderecos = enderecoDAO.listar();
-            
+
             ContatoDAO contatoDAO = new ContatoDAO();
             contatos = contatoDAO.listar();
 
@@ -351,13 +350,13 @@ public class EntidadeBean implements Serializable {
             Messages.addGlobalError("Erro ao listar cidades");
         }
     }
+
     public void popularBairro() {
         try {
             if (bairro != null) {
                 CidadeDAO cidadeDAO = new CidadeDAO();
                 cidades = cidadeDAO.buscaPorBairro(bairro.getCidade().getCodigo());
                 EstadoDAO estadoDAO = new EstadoDAO();
-                
 
             } else {
                 cidades = new ArrayList<>();

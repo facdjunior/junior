@@ -17,16 +17,16 @@ public class Contato extends GenericDomain{
     @Column(length = 120, nullable = false)
     private String email;
     @Column(length = 14)
-    private Character telefone;
+    private String telefone;
     @Column(length = 14)
-    private Character celular;
+    private String celular;
     @Column(length = 14)
-    private Character fax;
+    private String fax;
     @Column(length = 120)
     private String site;
     @Column(length = 60)
     private String skype;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
 
@@ -38,29 +38,30 @@ public class Contato extends GenericDomain{
         this.email = email;
     }
 
-    public Character getTelefone() {
+    public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(Character telefone) {
+    public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
 
-    public Character getCelular() {
+    public String getCelular() {
         return celular;
     }
 
-    public void setCelular(Character celular) {
+    public void setCelular(String celular) {
         this.celular = celular;
     }
 
-    public Character getFax() {
+    public String getFax() {
         return fax;
     }
 
-    public void setFax(Character fax) {
+    public void setFax(String fax) {
         this.fax = fax;
     }
+
 
     public String getSite() {
         return site;

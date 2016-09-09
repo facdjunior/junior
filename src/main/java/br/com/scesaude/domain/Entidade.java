@@ -32,6 +32,7 @@ public class Entidade extends GenericDomain {
     @Temporal(TemporalType.TIMESTAMP)
     private Date DataCadastro;
     private String CodigoCNES;
+    private Boolean ativo;
 
     public Integer getSequencia() {
         return Sequencia;
@@ -105,4 +106,11 @@ public class Entidade extends GenericDomain {
         this.contato = contato;
     }
 
-}
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+   }

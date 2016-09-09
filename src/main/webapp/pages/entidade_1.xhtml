@@ -22,17 +22,13 @@
                             <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener"/>
                         </p:commandButton>
                     </f:facet>
-
-                    <p:column headerText="Nome">
-                        <h:outputText value="#{entidade.codigo}"/>
+                    <p:column headerText="CNPJ">
+                        <h:outputText value="#{entidade.pessoaJuridica.CNPJ}"/>
                     </p:column>
+
 
                     <p:column headerText="CNES">
                         <h:outputText value="#{entidade.codigoCNES}"/>
-                    </p:column>
-
-                    <p:column headerText="CNPJ">
-                        <h:outputText value="#{entidade.pessoaJuridica.CNPJ}"/>
                     </p:column>
 
                     <p:column headerText="Razão Social">
@@ -55,8 +51,8 @@
                         <p:commandButton icon="ui-icon-pencil"
                                          actionListener="#{entidadeBean.Editar}"
                                          update="mensagem :frmCadastro:painel 
-                                     :frmCadastro:painel1 :frmCadastro:painel2 
-                                     :frmCadastro:painel3 :frmCadastro:painel4"
+                                         :frmCadastro:painel1 :frmCadastro:painel2 
+                                         :frmCadastro:painel3 :frmCadastro:painel4"
                                          oncomplete="PF('dlgEntidade').show();">
                             <f:attribute name="entidadeSelecionada" value="#{entidade}" />
                             <f:actionListener
@@ -109,7 +105,9 @@
                     <h:panelGrid id="painel2" columns="2">
 
                         <p:outputLabel for="tpentidade" value="Ramo de Atividade"/>
-                        <p:selectOneMenu id="tpentidade">
+                        <p:selectOneMenu id="tpentidade" filter="true"
+                                         converter="omnifaces.SelectItemsConverter"
+                                         value="#{entidadeBean.tipoEntidade}">
                             <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione Ramo de Atividade"/>
                             <f:selectItems value="#{entidadeBean.tpentidade}" var="tpentidade"
                                            itemValue="#{tpentidade}" itemLabel="#{tpentidade.descricao}"/>
@@ -126,7 +124,7 @@
                             <f:selectItem noSelectionOption="true" itemLabel="informe seu Bairro"/>
                             <f:selectItems value="#{entidadeBean.bairros}" var="bairro" itemValue="#{bairro}" 
                                            itemLabel="#{bairro.descricao}"/>
-                            <p:ajax listener="#{entidadeBean.popularBairro()}" update=":frmCadastro:cidade :frmCadastro:rua"/>
+                            <p:ajax listener="#{entidadeBean.popularBairro()}" update=":frmCadastro:cidade"/>
                         </p:selectOneMenu>
                         <p:outputLabel for="cidade" value="Cidade"/>
                         <p:selectOneMenu id="cidade" filter="true" required="true"
@@ -163,15 +161,15 @@
 
                 <p:panel id="pnlContato" header="Contato">
                     <h:panelGrid id="painel4" columns="6">
-                        <p:outputLabel for="telefone" value="Fone:" />
-                        <p:inputMask id="telefone" mask="(99)9999-9999" size="12"
+                        <p:outputLabel for="fone" value="Fone:" />
+                        <p:inputMask id="fone" mask="(99)9999-9999" size="14"
                                      value="#{entidadeBean.contato.telefone}"/>
-                        <p:outputLabel for="fax" value="Fax:" />
-                        <p:inputMask id="fax" mask="(99)9999-9999" size="12"
+                        <p:outputLabel for="fone1" value="Fone Contato:" />
+                        <p:inputMask id="fone1" mask="(99)9999-9999" size="14"
                                      value="#{entidadeBean.contato.fax}"/>
 
                         <p:outputLabel for="celular" value="Celular:" />
-                        <p:inputMask id="celular" mask="(99)9999-9999" size="12"
+                        <p:inputMask id="celular" mask="(99)9999-9999" size="14"
                                      value="#{entidadeBean.contato.celular}"/>
 
                         <p:outputLabel for="email" value="E-mail"/>

@@ -78,7 +78,7 @@ public class EntidadeDAOTest {
         System.err.println("Total de Registros Encontrados: " + resultado.size());
 
         for (Entidade entidade : resultado) {
-            System.out.println(entidade.getCodigo() + "-" + entidade.getEndereco().getLogradouro());
+            System.out.println(entidade.getPessoa().getNome() + "-" + entidade.getTipoEntidade());
         }
     }
 
