@@ -10,6 +10,7 @@ import br.com.scesaude.domain.Estado;
 import br.com.scesaude.domain.TipoEntidade;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -109,6 +110,8 @@ public class BairroBean implements Serializable {
     public void salvar() {
         try {
             BairroDAO bairroDAO = new BairroDAO();
+            
+            bairro.setDataCadastro(new Date());
             bairroDAO.merge(bairro);
 
             bairro = new Bairro();
@@ -116,6 +119,8 @@ public class BairroBean implements Serializable {
             estados = estadoDAO.listar();
 
             bairros = bairroDAO.listar();
+            
+            Messages.addGlobalInfo("Registro salvo com Sucesso!");
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao tentar gravar registro!");
