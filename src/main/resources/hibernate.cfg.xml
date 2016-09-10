@@ -30,6 +30,7 @@
         <mapping class="br.com.scesaude.domain.EstadoCivil"></mapping>
         <mapping class="br.com.scesaude.domain.Funcionario"></mapping>
         <mapping class="br.com.scesaude.domain.Pessoa"></mapping>
+        <mapping class="br.com.scesaude.domain.PessoaFisica"></mapping>
         <mapping class="br.com.scesaude.domain.PessoaJuridica"></mapping>
         <mapping class="br.com.scesaude.domain.TipoEntidade"></mapping>
         <mapping class="br.com.scesaude.domain.TipoFuncionario"></mapping>

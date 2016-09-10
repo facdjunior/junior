@@ -1,6 +1,7 @@
 package br.com.scesaude.domain;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +19,7 @@ import javax.persistence.TemporalType;
 public class Funcionario extends GenericDomain{
     
     private Integer Sequencia;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false)
     private Pessoa pessoa;
     @Temporal(TemporalType.DATE)
@@ -38,6 +39,14 @@ public class Funcionario extends GenericDomain{
     private Date DataCadastro;
     @Column(length = 6)
     private String NumeroANS;
+    @ManyToOne
+    private Entidade entidade;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Contato contato;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Endereco endereco;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private PessoaFisica pessoaFisica;
 
     public Integer getSequencia() {
         return Sequencia;
@@ -126,6 +135,39 @@ public class Funcionario extends GenericDomain{
     public void setNumeroANS(String NumeroANS) {
         this.NumeroANS = NumeroANS;
     }
+
+    public Entidade getEntidade() {
+        return entidade;
+    }
+
+    public void setEntidade(Entidade entidade) {
+        this.entidade = entidade;
+    }
+
+    public Contato getContato() {
+        return contato;
+    }
+
+    public void setContato(Contato contato) {
+        this.contato = contato;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
+
+    public PessoaFisica getPessoaFisica() {
+        return pessoaFisica;
+    }
+
+    public void setPessoaFisica(PessoaFisica pessoaFisica) {
+        this.pessoaFisica = pessoaFisica;
+    }
+    
     
     
 

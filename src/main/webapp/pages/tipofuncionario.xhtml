@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/templates/modelo.xhtml">
+
+    <ui:define name="conteudo">
+
+        <h:form id="frmLista">
+            <p:panel id="pnlLista">
+                <p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado" paginator="true"
+                             value="#{tipoFuncionarioBean.tipoFuncionarios}" 
+                             var="tpFuncionarios" rows="10" paginatorPosition="top">
+                    <f:facet name="footer">
+                        <p:commandButton value="Novo" oncomplete="PF('dlgTpFuncionarios').show();"
+                                         actionListener="#{tipoFuncionarioBean.novo()}" update=":mensagem :frmCadastro:painel">
+                            <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </f:facet>
+                    <p:column headerText="Descrição" filterBy="#{tpFuncionarios.descricao}" sortBy="#{tpFuncionarios.descricao}">
+                        <h:outputText value="#{tpFuncionarios.descricao}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Cadastro">
+                        <h:outputText value="#{tpFuncionarios.dataCadastro}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-3"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Opções">
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{tipoFuncionarioBean.excluir}"
+                                         update=":mensagem :frmLista:tabela">
+                            <p:confirm header="Deseja Excluir" message="Deseja excluir registro selecionado?"
+                                       icon="ui-icon-alert"/>
+                            <f:attribute name="tipoFuncionarioSelecionado" value="#{tpFuncionarios}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-pencil" actionListener="#{tipoFuncionarioBean.editar}"
+                                         update=":mensagem :frmCadastro:painel"
+                                         oncomplete="PF('dlgTpFuncionarios').show()">
+                            <f:attribute name="tipoFuncionarioSelecionado" value="#{tpFuncionarios}"/>
+                            <f:actionListener type="org.omnifaces.eventlistener.ResetInputAjaxActionListener" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Sim" type="button"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" 
+                                     styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+            </p:panel>
+        </h:form>
+        <p:dialog header="Cadastro de Tipo de Funcionário" widgetVar="dlgTpFuncionarios"
+                  draggable="false" resizable="false" modal="true" closable="false">
+            <h:form id="frmCadastro">
+                <h:panelGrid id="painel" columns="2">
+                    <p:outputLabel value="Descrição:"/>
+                    <p:inputText maxlength="120" size="28" 
+                                 converter="upperCaseConverter" 
+                                 value="#{tipoFuncionarioBean.tipoFuncionario.descricao}"/>
+
+                    <p:outputLabel value="Data de Cadastro:"/>
+                    <p:calendar value="#{tipoFuncionarioBean.tipoFuncionario.dataCadastro}" 
+                                pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3" 
+                                size="12" disabled="true"/>
+                </h:panelGrid>
+                <h:panelGrid columns="2">
+
+                    <p:commandButton value="Salvar" actionListener="#{tipoFuncionarioBean.salvar()}" 
+                                     update=":mensagem :frmCadastro:painel :frmLista:tabela"/>
+                    <p:commandButton value="Fechar" oncomplete="PF('dlgTpFuncionarios').hide();"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+</ui:composition>
+
+

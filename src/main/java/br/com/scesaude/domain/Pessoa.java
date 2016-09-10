@@ -25,7 +25,7 @@ public class Pessoa extends GenericDomain{
     @Column(length = 1)
     private Character sexo;
     private Integer Sequencia;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Entidade entidade;
     @Temporal(TemporalType.TIMESTAMP)
     private Date DataCadastro;

@@ -32,7 +32,7 @@ public class Endereco extends GenericDomain{
     @Column(length = 90)
     private String complemento;
     private Boolean Ativo;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Pessoa pessoa;
     @ManyToOne
     private Entidade entidade;
