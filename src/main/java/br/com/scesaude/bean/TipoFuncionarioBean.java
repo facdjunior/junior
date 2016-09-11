@@ -107,7 +107,7 @@ public class TipoFuncionarioBean implements Serializable {
     
     public void editar(ActionEvent evento){
         
-        tipoFuncionario = (TipoFuncionario) evento.getComponent().getAttributes().get("tipoFuncionarioSelecionado");
+        tipoFuncionario = (TipoFuncionario) evento.getComponent().getAttributes().get("tipoFuncionarioSelecionadozzzxzxzxz");
     }
 
 }
