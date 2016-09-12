@@ -85,7 +85,7 @@
                                      requiredMessage="Favor informe o campo Nome"/>
 
                         <p:outputLabel for="dtNascimento" value="Data Nascimento"/>
-                        <p:calendar id="dtNascimento" pattern="dd/MM/yyyy" timeZone="GMT-3"
+                        <p:calendar id="dtNascimento" pattern="dd/MM/yyyy" locale="pt_BR" timeZone="GMT-3"
                                     value="#{funcionarioBean.pessoaFisica.dataNascimento}"/>
 
                         <p:outputLabel for="estCivil" value="Estado Civil"/>
@@ -125,14 +125,14 @@
                         <p:inputText id="oemissor" size="18" 
                                      value="#{funcionarioBean.pessoaFisica.orgaoEmissor}" />
 
-                        <p:outputLabel for="dtEmissao" value="CNES"/>
+                        <p:outputLabel for="dtEmissao" value="Data Emissão RG:"/>
                         <p:calendar id="dtEmissao" value="#{funcionarioBean.pessoaFisica.dataEmissaoRg}" 
                                     pattern="dd/MM/yyyy" timeZone="GMT-3"/>
                     </h:panelGrid>
                     <h:panelGrid id="painel2" columns="2">
 
-                        <p:outputLabel for="tpfuncionario" value="Função"/>
-                        <p:selectOneMenu id="tpfuncionario" filter="true"
+                        <p:outputLabel for="tipfuncionario" value="Função"/>
+                        <p:selectOneMenu id="tipfuncionario" filter="true"
                                          converter="omnifaces.SelectItemsConverter"
                                          value="#{funcionarioBean.tipoFuncionario}">
                             <f:selectItem noSelectionOption="true" itemValue="" itemLabel="Selecione Ramo de Atividade"/>

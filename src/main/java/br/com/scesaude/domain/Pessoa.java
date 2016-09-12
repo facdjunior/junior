@@ -2,8 +2,6 @@ package br.com.scesaude.domain;
 
 
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -32,7 +30,7 @@ public class Pessoa extends GenericDomain{
     private Date DataCadastro;
     @ManyToOne
     private PessoaFisica pessoaFisica;
-    private List<PessoaFisica> pessoaFisicas;
+ //   private List<PessoaFisica> pessoaFisicas;
     
     private Byte[] ImagemPessoa;
 
@@ -98,15 +96,5 @@ public class Pessoa extends GenericDomain{
 
     public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
-    }
-
-    public List<PessoaFisica> getPessoaFisicas() {
-        return pessoaFisicas;
-    }
-
-    public void setPessoaFisicas(List<PessoaFisica> pessoaFisicas) {
-        this.pessoaFisicas = pessoaFisicas;
-    }
-
-    
+    }   
 }

@@ -7,7 +7,7 @@ import br.com.scesaude.dao.TipoFuncionarioDAO;
 import br.com.scesaude.domain.Bairro;
 import br.com.scesaude.domain.Contato;
 import br.com.scesaude.domain.Endereco;
-import br.com.scesaude.domain.Entidade;
+
 import br.com.scesaude.domain.Funcionario;
 import br.com.scesaude.domain.Pessoa;
 import br.com.scesaude.domain.PessoaFisica;

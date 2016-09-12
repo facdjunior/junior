@@ -236,7 +236,7 @@ public class FuncionarioBean implements Serializable {
 
     public void novo() {
         try {
-            entidade = new Entidade();
+            //entidade = new Entidade();
             pessoa = new Pessoa();
             endereco = new Endereco();
             pessoaFisica = new PessoaFisica();
@@ -248,7 +248,7 @@ public class FuncionarioBean implements Serializable {
             estados = estadoDAO.listar("nome");
 
             TipoFuncionarioDAO tipoFuncionarioDAO = new TipoFuncionarioDAO();
-            tipoFuncionarios = tipoFuncionarioDAO.listar("codigo");
+            tipoFuncionarios = tipoFuncionarioDAO.listar("Descricao");
 
             BairroDAO bdao = new BairroDAO();
             bairros = bdao.listar("descricao");
@@ -259,7 +259,7 @@ public class FuncionarioBean implements Serializable {
             enderecos = enderecoDAO.listar("logradouro");
 
             cidades = new ArrayList<Cidade>();
-            Messages.addGlobalInfo("Registro salvo com Sucesso!");
+           
             
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao carregar registros!");
@@ -274,36 +274,42 @@ public class FuncionarioBean implements Serializable {
 
             //Grava nova Pessoa
             funcionario.setPessoa(pessoa);
-            pessoa.setEntidade(entidade);
+            pessoa.setPessoaFisica(pessoaFisica);
+           // pessoa.setPessoaFisica(pessoaFisica);
+            //pessoa.setEntidade(entidade);
 
             // Grava Novo Endereço
             funcionario.setEndereco(endereco);
             endereco.setBairro(bairro);
             endereco.setPessoa(pessoa);
-            endereco.setEntidade(entidade);
+         //   endereco.setEntidade(entidade);
 
             //Inicia Novo Contato
             funcionario.setContato(contato);
             funcionario.setPessoaFisica(pessoaFisica);
             funcionario.setTipoFuncionario(tipoFuncionario);
             funcionario.setEndereco(endereco);
-            funcionario.setEntidade(entidade);
+       //     funcionario.setEntidade(entidade);
             contato.setPessoa(pessoa);
 
             //Gravar Tipo Entidade
             funcionario.setTipoFuncionario(tipoFuncionario);
-            tipoFuncionario.setEntidade(entidade);
+          //  tipoFuncionario.setEntidade(entidade);
 
             //Grava Novo Pessoa Juridica
-            entidade.setPessoa(pessoa);
+           // entidade.setPessoa(pessoa);
             pessoaFisica.setPessoa(pessoa);
+            pessoaFisica.setContato(contato);
+            pessoaFisica.setEndereco(endereco);
+            pessoaFisica.setTipoFuncionario(tipoFuncionario);
             
             //Receber Codigo Entidade e popula nos novos Registros "Pessoa", "Endereço", "Pessoa Juridica"
             
             funcionarioDAO.merge(funcionario);
+             Messages.addGlobalInfo("Registro salvo com Sucesso!");
             novo();
             
-            funcionarios = funcionarioDAO.listar();
+            //funcionarios = funcionarioDAO.listar();
 
         } catch (RuntimeException erro) {
             Messages.addGlobalError("Erro ao tentar gravar registro!" + erro);
@@ -333,8 +339,8 @@ public class FuncionarioBean implements Serializable {
             bairro = funcionario.getEndereco().getBairro();
             pessoa = funcionario.getPessoaFisica().getPessoa();
             pessoaFisica = funcionario.getPessoa().getPessoaFisica();
-            endereco = entidade.getPessoa().getEntidade().getEndereco();
-            contato = entidade.getPessoa().getEntidade().getContato();
+            endereco = funcionario.getPessoaFisica().getEndereco();
+            contato = funcionario.getPessoa().getEntidade().getContato();
             tipoFuncionario = funcionario.getPessoaFisica().getTipoFuncionario();
 
             EstadoDAO estadoDAO = new EstadoDAO();
@@ -359,7 +365,7 @@ public class FuncionarioBean implements Serializable {
             contatos = contatoDAO.listar();
 
         } catch (RuntimeException erro) {
-            Messages.addGlobalError("Ocorreu um erro ao editar registro");
+            Messages.addGlobalError("Ocorreu um erro ao editar registro"+erro);
             erro.printStackTrace();
         }
     }
