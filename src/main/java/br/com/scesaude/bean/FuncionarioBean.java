@@ -8,7 +8,7 @@ import br.com.scesaude.dao.EntidadeDAO;
 import br.com.scesaude.dao.EstadoDAO;
 import br.com.scesaude.dao.FuncionarioDAO;
 import br.com.scesaude.dao.PessoaDAO;
-import br.com.scesaude.dao.TipoEntidadeDAO;
+
 import br.com.scesaude.dao.TipoFuncionarioDAO;
 import br.com.scesaude.domain.Bairro;
 import br.com.scesaude.domain.Cidade;
@@ -19,8 +19,6 @@ import br.com.scesaude.domain.Estado;
 import br.com.scesaude.domain.Funcionario;
 import br.com.scesaude.domain.Pessoa;
 import br.com.scesaude.domain.PessoaFisica;
-import br.com.scesaude.domain.PessoaJuridica;
-import br.com.scesaude.domain.TipoEntidade;
 import br.com.scesaude.domain.TipoFuncionario;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -251,7 +249,7 @@ public class FuncionarioBean implements Serializable {
             tipoFuncionarios = tipoFuncionarioDAO.listar("Descricao");
 
             BairroDAO bdao = new BairroDAO();
-            bairros = bdao.listar("descricao");
+            bairros = bdao.listar("codigo");
             
             bairro = new Bairro();
 
@@ -340,8 +338,8 @@ public class FuncionarioBean implements Serializable {
             pessoa = funcionario.getPessoaFisica().getPessoa();
             pessoaFisica = funcionario.getPessoa().getPessoaFisica();
             endereco = funcionario.getPessoaFisica().getEndereco();
-            contato = funcionario.getPessoa().getEntidade().getContato();
             tipoFuncionario = funcionario.getPessoaFisica().getTipoFuncionario();
+            contato = funcionario.getPessoaFisica().getContato();
 
             EstadoDAO estadoDAO = new EstadoDAO();
             estados = estadoDAO.listar();

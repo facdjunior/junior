@@ -89,7 +89,7 @@
                                     value="#{funcionarioBean.pessoaFisica.dataNascimento}"/>
 
                         <p:outputLabel for="estCivil" value="Estado Civil"/>
-                        <p:selectOneMenu id="estCivil">
+                        <p:selectOneMenu id="estCivil" value="#{funcionarioBean.pessoaFisica.estadoCivil}">
                             <f:selectItem itemLabel="Informe estado civil" itemValue="" />
                             <f:selectItem itemLabel=" Solteiro(a)" itemValue="S" />
                             <f:selectItem itemLabel="Casado(a)" itemValue="C" />
@@ -98,7 +98,7 @@
                             <f:selectItem itemLabel="Outro" itemValue="O" />
                         </p:selectOneMenu>
                         <p:outputLabel for="sexo" value="Sexo"/>
-                        <p:selectOneMenu id="sexo">
+                        <p:selectOneMenu id="sexo" value="#{funcionarioBean.pessoaFisica.sexo}">
                             <f:selectItem itemLabel="Informe sexo" itemValue="" />
                             <f:selectItem itemLabel="Masculino" itemValue="M" />
                             <f:selectItem itemLabel="Feminino" itemValue="F" />
